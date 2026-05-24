@@ -1,0 +1,98 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device=width , initial-scale=1.0">
+    <title>Student Task Manager</title>
+    <link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+</head>
+
+<body>
+    <header>
+        <h1>Student Task Manager</h1>
+        <p>Welcome,{{request.user.usernam}}!<a href="/logout/">Logout</a></p>
+    </header>
+    <main class="container">
+
+        <section class="search-section">
+            <form method="GET" action="/">
+                <input type="text" name="search" placeholder="Search task..." value="{{request.GET.search}}">
+
+            <select name="filter">
+                <option value="All">
+                    All tasks
+                </option>
+                <option value="completed">
+                    Completed
+                </option>
+                <option value="pending">
+                    Pending
+                </option>
+
+
+            </select>
+            <button type="submit">Search</button>
+            </form>
+
+            
+
+
+        </section>
+
+        <section class="form-section">
+            <h2>Add New Task</h2>
+            <form method="POST" action="/add/">
+                {% csrf_token %}
+            <input type="text" name="title" placeholder="Task Title">
+            <input type="text" name="category" placeholder=" Category">
+            <input type="date"name="deadline" placeholder="deadline">
+
+            <button type="submit">
+                Add Task
+            </button>
+            </form>
+            
+        </section>
+
+        <section class="tasks-section">
+            <h2>Your Tasks</h2>
+            
+            <div id="taskcontainer">
+                {%for task in tasks%}
+                <div class="task-card {% if task.completed%}completed{%endif%}">
+                    <h3>{{task.title}}</h3>
+                    <p>Category:{{task.category}}</p>
+                    <p>Deadline:{{task.deadline}}</p>
+                    <a href="/complete/{{task.id}}">
+                        <button class="completeBtn">Complete</button>
+                    </a>
+                    <a href="/delete/{{task.id}}">
+                        <button class="deleteBtn">Delete</button>
+                    </a>
+                </div>
+                {%empty%}
+                <p>No tasks yet! Add one above.</p>
+                {%endfor%}
+
+            </div>
+        </section>
+
+
+
+    </main>
+
+    <script src="{% static 'tasks/app.js' %}"></script>
+
+
+
+
+
+</body>
+
+
+
+
+</html>
