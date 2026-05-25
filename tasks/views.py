@@ -11,11 +11,11 @@ def index(request):
     
     search=request.GET.get('search','')
     if search:
-        tasks=tasks.filter(title__icontaines=search)
+        tasks=tasks.filter(title__icontains=search)
 
     filter_by=request.GET.get('filter','all')
     if filter_by=='completed':
-        tasks=task.filter(completed=True)
+        tasks=tasks.filter(completed=True)
     elif filter_by=='pending':
         tasks=tasks.filter(completed=False)
     
